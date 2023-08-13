@@ -1,0 +1,24 @@
+<?php
+
+$email = $_POST['email'];
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    die("invalid email format.");
+}
+
+$allowedExtensions = ["jpeg", "png"];
+$fileupload = $_FILES['file'];
+$uploadedExtension = pathinfo($fileupload['name'], PATHINFO_EXTENSION);
+
+if (!in_array(strtolower($uploadedExtension), $allowedExtensions)) {
+    die("Please choose only JPEG or PNG file.");
+}
+
+$uploadDir = "uploads/";
+$uploadPath = $uploadDir . uniqid() . '.' . $uploadedExtension;
+
+if (!move_uploaded_file($fileupload['tmp_name'], $uploadPath)) {
+    die("error when uploading file, please try again.");
+}
+
+echo "file uploaded successfully.";
+?>
